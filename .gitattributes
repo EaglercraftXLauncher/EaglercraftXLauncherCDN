@@ -28,3 +28,6 @@ LICENSE text
 # --- Specialized Logic ---
 # Ensure minified libraries aren't treated as standard diffable text to save CPU
 *.min.js -diff
+# Keep launcher source pages as normal text (NOT LFS pointers)
+index.html -filter -diff -merge text
+pages/*.html -filter -diff -merge text
