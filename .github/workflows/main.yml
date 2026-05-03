@@ -1,0 +1,32 @@
+name: Deploy LFS to GitHub Pages
+
+on:
+  push:
+    branches:
+      - gh-pages  # Set this to your default branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true  # Instructs GitHub to download the actual large files
+          fetch-depth: 0 # Fetches all history, often needed for static site generators
+
+      - name: ❌ Remove LFS metadata
+        # Prevents the 'gh-pages' branch from treating these as LFS pointers
+        run: |
+          git lfs uninstall
+          rm -rf .gitattributes
+          rm -rf .git
+
+      - name: 🚀 Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # Change this to your build folder (e.g., ./dist) if applicable
+          publish_branch: gh-pages
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
