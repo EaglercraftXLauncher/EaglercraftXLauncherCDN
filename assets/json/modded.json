@@ -1,0 +1,254 @@
+[
+    {
+       "title": "Resent 4.0",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/command-block.png",
+       "link": "./Clients/Resent/Resent 4.0.html",
+       "active": true
+    },
+    {
+       "title": "Resent 3.6",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/redstone-block.png",
+       "link": "./Clients/Resent/Resent 3.6.html",
+       "active": true
+    },
+    {
+       "title": "Shadow Client",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/obsidian.png",
+       "link": "./Clients/Shadow Client.html",
+       "active": true
+    },
+    {
+       "title": "Precision Client",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/diamond-block.png",
+       "link": "./Clients/Precision Client/Precision Client.html",
+       "active": true
+    },
+    {
+       "title": "Dragon v5",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/dragon-egg.png",
+       "link": "./Clients/Dragon/Dragon v5.html",
+       "active": true
+    },
+    {
+       "title": "Dragon v4",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/end-stone.png",
+       "link": "./Clients/Dragon/Dragon v4.html",
+       "active": true
+    },
+    {
+       "title": "Dragon v3",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/purpur-block.png",
+       "link": "./Clients/Dragon/Dragon v3.html",
+       "active": true
+    },
+    {
+       "title": "Dragon v2 Premium",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/gold-block.png",
+       "link": "./Clients/Dragon/Dragon v2.premium.html",
+       "active": true
+    },
+    {
+       "title": "Dragon v2",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/iron-block.png",
+       "link": "./Clients/Dragon/Dragon v2.html",
+       "active": true
+    },
+    {
+       "title": "Dragon v1",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/coal-block.png",
+       "link": "./Clients/Dragon/Dragon v1.html",
+       "active": true
+    },
+    {
+       "title": "Astra v2",
+       "version": "1.12.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/nether-star.png",
+       "link": "./Clients/Astra/astra v2 1.12.html",
+       "active": true
+    },
+    {
+       "title": "Astra v1",
+       "version": "1.12.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/quartz.png",
+       "link": "./Clients/Astra/astra v1 1.12.html",
+       "active": true
+    },
+    {
+       "title": "Astra v2 1.8",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/glowstone.png",
+       "link": "./Clients/Astra/astra v2 1.8.html",
+       "active": true
+    },
+    {
+       "title": "Flame v3.8",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/fire-charge.png",
+       "link": "./Clients/Flame/Flame v3.8.html",
+       "active": true
+    },
+    {
+       "title": "Flame v3.7",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/blaze-powder.png",
+       "link": "./Clients/Flame/Flame v3.7.html",
+       "active": true
+    },
+    {
+       "title": "Justin v1.2.3",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/emerald-block.png",
+       "link": "./Clients/Justin/Justin v1.2.3.html",
+       "active": true
+    },
+    {
+       "title": "Justin v1.2.2",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/emerald.png",
+       "link": "./Clients/Justin/Justin v1.2.2.html",
+       "active": true
+    },
+    {
+       "title": "Justin v1.2.1",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/lapis-block.png",
+       "link": "./Clients/Justin/Justin v1.2.1.html",
+       "active": true
+    },
+    {
+       "title": "Justin v1.2.0",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/lapis-lazuli.png",
+       "link": "./Clients/Justin/Justin v1.2.0.html",
+       "active": true
+    },
+    {
+       "title": "Justin v1.1.1",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/redstone.png",
+       "link": "./Clients/Justin/Justin v1.1.1.html",
+       "active": true
+    },
+    {
+       "title": "Justin v1.1.0",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/coal.png",
+       "link": "./Clients/Justin/Justin v1.1.0.html",
+       "active": true
+    },
+    {
+       "title": "FuschiaX",
+       "version": "1.5.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/magenta-wool.png",
+       "link": "./Clients/FuschaiX/FuschiaX.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft L 1.9",
+       "version": "1.9",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/elytra.png",
+       "link": "./Clients/EaglercraftL/EaglercraftL 1.9.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.10.1",
+       "version": "0.0.10.1",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/zombie-head.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.10.1.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.9",
+       "version": "0.0.9",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/rotten-flesh.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.9.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.8",
+       "version": "0.0.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/bone.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.8.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.6",
+       "version": "0.0.6",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/spider-eye.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.6.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.5",
+       "version": "0.0.5",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/string.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.5.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.4.2",
+       "version": "0.0.4.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/gunpowder.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.4.2.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.4.1",
+       "version": "0.0.4.1",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/arrow.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.4.1.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.3",
+       "version": "0.0.3",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/feather.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.3.html",
+       "active": true
+    },
+    {
+       "title": "EaglerCraft Z 0.0.2",
+       "version": "0.0.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/leather.png",
+       "link": "./Clients/EaglercraftZ/EaglercraftZ 0.0.2.html",
+       "active": true
+    },
+    {
+       "title": "EaglyMC",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/ender-eye.png",
+       "link": "./Clients/EaglyMC/EaglyMC.html",
+       "active": true
+    },
+    {
+       "title": "JmoCraft v5.2",
+       "version": "1.5.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/jukebox.png",
+       "link": "./Clients/Jmo Craft/JmoCraft v5.2.html",
+       "active": true
+    },
+    {
+       "title": "Ayunami 1.5",
+       "version": "1.5.2",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/pink-wool.png",
+       "link": "./Clients/ayunami-1.5.html",
+       "active": true
+    },
+    {
+       "title": "Codecraft",
+       "version": "1.8.8",
+       "icon": "https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/repeating-command-block.png",
+       "link": "./Clients/Codecraft/Codecrcraft.html",
+       "active": true
+    }
+]
