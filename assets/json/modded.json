@@ -149,7 +149,7 @@
     {
        "title": "FuschiaX",
        "version": "1.5.2",
-       "icon": "./assets/images/Fuschia.png",
+       "icon": "./assets/images/FuschiaX.png",
        "link": "./Clients/FuschaiX/FuschiaX.html",
        "active": true
     },
