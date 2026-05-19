@@ -1,7 +1,0 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Play</title><link rel="stylesheet" href="../assets/styles.css"></head>
-<body><div class="wrap"><h1>Play</h1><div id="nav"></div><div id="grid" class="grid"></div></div>
-<script src="../assets/data.js"></script><script src="../assets/app.js"></script><script>
-document.getElementById('nav').innerHTML=nav('play');
-const all=[...LAUNCHER_DATA.web,...LAUNCHER_DATA.modded,...LAUNCHER_DATA.mobile];
-all.forEach(e=>document.getElementById('grid').appendChild(card(e.name,e.version,[btn('Play',()=>location.href='../'+e.path,'btn'),btn('Copy Path',()=>navigator.clipboard.writeText(e.path))])));
-</script></body></html>
