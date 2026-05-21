@@ -196,6 +196,7 @@ function generatelauncheroptions(path, game, gamepath) {
 };
 
 const mods = document.getElementById("modsbox");
+const skinsbox = document.getElementById("skinsbox");
 function generatemods() {
     fetch("./assets/json/mods.json").then((response) => response.json()).then((data) => {
         data.forEach((mod) => {
@@ -246,6 +247,50 @@ function generatemods() {
     })
 };
 
+
+
+function generateskins() {
+    if (!skinsbox) {return};
+    if (skinsbox.childElementCount > 0) {return};
+    fetch("./assets/json/skins.json").then((response) => response.json()).then((data) => {
+        data.forEach((skin) => {
+            const card = document.createElement("div");
+            card.className = "modoption";
+            card.style.display = "flex";
+            card.style.flexDirection = "column";
+            card.style.alignItems = "center";
+            card.style.padding = "0.8vw";
+
+            const img = document.createElement("img");
+            img.src = skin.image;
+            img.alt = skin.name;
+            img.style.width = "8vw";
+            img.style.imageRendering = "pixelated";
+
+            const title = document.createElement("p");
+            title.className = "bolded modtitle";
+            title.style.marginTop = "0.5vw";
+            title.textContent = skin.name;
+
+            const author = document.createElement("p");
+            author.className = "modauthor";
+            author.textContent = "by " + skin.author;
+
+            const download = document.createElement("a");
+            download.href = skin.image;
+            download.download = skin.name.replace(/\s+/g, "-").toLowerCase() + ".png";
+            download.className = "classicbutton";
+            download.style.marginTop = "0.5vw";
+            download.innerHTML = "<p class='bolded'>Download</p>";
+
+            card.appendChild(img);
+            card.appendChild(title);
+            card.appendChild(author);
+            card.appendChild(download);
+            skinsbox.appendChild(card);
+        });
+    });
+}
 function newinstallation(data) {
     const installationscreenheader = document.createElement("div");
     installationscreenheader.className = "bolded notescreenheader";
@@ -817,6 +862,12 @@ function installationheader(){
     document.getElementById('installations').style.display = "flex";
     document.getElementById('header4').classList.add('selected');
 }
+function skinsheader(){
+    resetHeaderSelected();
+    generateskins();
+    document.getElementById('skins').style.display = "flex";
+    document.getElementById('header5').classList.add('selected');
+}
 function patchnotesheader(){
     resetHeaderSelected();
     generatenotes();
@@ -887,6 +938,7 @@ function resetHeaderSelected() {
     document.getElementById('faq').style.display = "none";
     document.getElementById('installations').style.display = "none";
     document.getElementById('patchNotes').style.display = "none";
+    document.getElementById('skins').style.display = "none";
     document.getElementById('credits').style.display = "none";
     document.getElementById('contributors').style.display = "none";
     document.getElementById('generalsettings').style.display = "none";
