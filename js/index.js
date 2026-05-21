@@ -13,6 +13,125 @@ function errorNA(text) {
     }, 3200);
 }
 
+
+
+/**
+ * Inject a custom EaglercraftX profile packet into IndexedDB key "p".
+ *
+ * The packet is stored as a binary blob in database: net.lax1dude.eaglercraft.v1,
+ * object store: settings, key: "p".
+ *
+ * @param {string} username Player username to store in the profile packet
+ * @param {string} skinPngBase64 Base64 PNG payload (data URL or raw base64)
+ * @param {boolean} isSlimModel True for Alex/slim arms, false for Steve/classic
+ * @returns {Promise<{ok:boolean, bytesWritten:number}>}
+ */
+async function injectProfilePacket(username, skinPngBase64, isSlimModel) {
+    try {
+        if (typeof username !== "string" || username.trim().length === 0) {
+            throw new Error("username must be a non-empty string");
+        }
+        if (typeof skinPngBase64 !== "string" || skinPngBase64.trim().length === 0) {
+            throw new Error("skinPngBase64 must be a non-empty string");
+        }
+
+        const cleanUsername = username.trim().slice(0, 16);
+        const skinBytes = decodeBase64PngToBytes(skinPngBase64);
+
+        const profileObject = {
+            username: cleanUsername,
+            skinId: 0,
+            skinSlim: !!isSlimModel,
+            skinData: bytesToBase64(skinBytes),
+            updatedAt: Date.now(),
+            packetVersion: 1
+        };
+
+        const profileBytes = await encodeProfilePacket(profileObject);
+        const db = await openEaglerSettingsDB();
+
+        await putKeyValue(db, "settings", "p", profileBytes.buffer.slice(profileBytes.byteOffset, profileBytes.byteOffset + profileBytes.byteLength));
+
+        return { ok: true, bytesWritten: profileBytes.byteLength };
+    } catch (err) {
+        console.error("injectProfilePacket failed:", err);
+        throw err;
+    }
+}
+
+function decodeBase64PngToBytes(skinPngBase64) {
+    const stripped = skinPngBase64
+        .trim()
+        .replace(/^data:image\/(png|x-png);base64,/i, "")
+        .replace(/\s+/g, "");
+
+    const binary = atob(stripped);
+    const out = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        out[i] = binary.charCodeAt(i) & 0xff;
+    }
+
+    const pngMagic = [0x89, 0x50, 0x4e, 0x47];
+    for (let i = 0; i < pngMagic.length; i++) {
+        if (out[i] !== pngMagic[i]) {
+            throw new Error("skinPngBase64 does not decode to a PNG payload");
+        }
+    }
+
+    return out;
+}
+
+function bytesToBase64(bytes) {
+    let bin = "";
+    for (let i = 0; i < bytes.length; i++) {
+        bin += String.fromCharCode(bytes[i]);
+    }
+    return btoa(bin);
+}
+
+async function encodeProfilePacket(profileObject) {
+    const jsonBytes = new TextEncoder().encode(JSON.stringify(profileObject));
+
+    if (typeof CompressionStream !== "undefined") {
+        const stream = new Blob([jsonBytes]).stream().pipeThrough(new CompressionStream("gzip"));
+        const compressed = await new Response(stream).arrayBuffer();
+        return new Uint8Array(compressed);
+    }
+
+    return jsonBytes;
+}
+
+function openEaglerSettingsDB() {
+    return new Promise((resolve, reject) => {
+        const req = indexedDB.open("net.lax1dude.eaglercraft.v1", 1);
+
+        req.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains("settings")) {
+                db.createObjectStore("settings");
+            }
+        };
+
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error || new Error("Failed to open IndexedDB"));
+        req.onblocked = () => reject(new Error("IndexedDB open blocked by another tab/process"));
+    });
+}
+
+function putKeyValue(db, storeName, key, value) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readwrite");
+        const store = tx.objectStore(storeName);
+        store.put(value, key);
+
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error("IndexedDB transaction failed"));
+        tx.onabort = () => reject(tx.error || new Error("IndexedDB transaction aborted"));
+    });
+}
+
+window.injectProfilePacket = injectProfilePacket;
+
 // Last Played Game Option
 let selectedGame1 = localStorage.getItem("basegame");
 let selectedGame2 = localStorage.getItem("moddedgame");
@@ -196,6 +315,7 @@ function generatelauncheroptions(path, game, gamepath) {
 };
 
 const mods = document.getElementById("modsbox");
+const skinsbox = document.getElementById("skinsbox");
 function generatemods() {
     fetch("./assets/json/mods.json").then((response) => response.json()).then((data) => {
         data.forEach((mod) => {
@@ -246,6 +366,50 @@ function generatemods() {
     })
 };
 
+
+
+function generateskins() {
+    if (!skinsbox) {return};
+    if (skinsbox.childElementCount > 0) {return};
+    fetch("./assets/json/skins.json").then((response) => response.json()).then((data) => {
+        data.forEach((skin) => {
+            const card = document.createElement("div");
+            card.className = "modoption";
+            card.style.display = "flex";
+            card.style.flexDirection = "column";
+            card.style.alignItems = "center";
+            card.style.padding = "0.8vw";
+
+            const img = document.createElement("img");
+            img.src = skin.image;
+            img.alt = skin.name;
+            img.style.width = "8vw";
+            img.style.imageRendering = "pixelated";
+
+            const title = document.createElement("p");
+            title.className = "bolded modtitle";
+            title.style.marginTop = "0.5vw";
+            title.textContent = skin.name;
+
+            const author = document.createElement("p");
+            author.className = "modauthor";
+            author.textContent = "by " + skin.author;
+
+            const download = document.createElement("a");
+            download.href = skin.image;
+            download.download = skin.name.replace(/\s+/g, "-").toLowerCase() + ".png";
+            download.className = "classicbutton";
+            download.style.marginTop = "0.5vw";
+            download.innerHTML = "<p class='bolded'>Download</p>";
+
+            card.appendChild(img);
+            card.appendChild(title);
+            card.appendChild(author);
+            card.appendChild(download);
+            skinsbox.appendChild(card);
+        });
+    });
+}
 function newinstallation(data) {
     const installationscreenheader = document.createElement("div");
     installationscreenheader.className = "bolded notescreenheader";
@@ -817,6 +981,12 @@ function installationheader(){
     document.getElementById('installations').style.display = "flex";
     document.getElementById('header4').classList.add('selected');
 }
+function skinsheader(){
+    resetHeaderSelected();
+    generateskins();
+    document.getElementById('skins').style.display = "flex";
+    document.getElementById('header5').classList.add('selected');
+}
 function patchnotesheader(){
     resetHeaderSelected();
     generatenotes();
@@ -887,6 +1057,7 @@ function resetHeaderSelected() {
     document.getElementById('faq').style.display = "none";
     document.getElementById('installations').style.display = "none";
     document.getElementById('patchNotes').style.display = "none";
+    document.getElementById('skins').style.display = "none";
     document.getElementById('credits').style.display = "none";
     document.getElementById('contributors').style.display = "none";
     document.getElementById('generalsettings').style.display = "none";
