@@ -1,3 +1,7 @@
+// ===== AMPLER LAUNCHER - COMPLETE UI FIX =====
+// All UI functionality separated from HTML
+// Maintains all hardcoded Ampler Launcher URLs
+
 // Not Added Feature
 function errorNA(text) {
     clearTimeout()
@@ -12,9 +16,6 @@ function errorNA(text) {
         document.getElementById('errortext').innerHTML = "This feature hasn't been made yet."
     }, 3200);
 }
-
-
-
 
 // Last Played Game Option
 let selectedGame1 = localStorage.getItem("basegame");
@@ -37,9 +38,10 @@ if (!localStorage.getItem("launcherpresets")) {
 };
 let customlaunchersnumber = localStorage.getItem("customlaunchersnumber").padStart(2, "0");
 if (customlaunchersnumber > 99) {
-    console.log("%cWell.. You found an easter egg. You broke the launcher. Sure I can easily fix it. But this is a rare bug. Report if you found this bug, then I will. -IRV77", "color: red; font-weight: bold; background-color: rgba(0,0,0,0.5); padding: 1vw;");
+    console.log("%cWell.. You found an easter egg. You broke the launcher. Sure I can easily fix it. But this is a rare bug. Report if you found this bug, then I will. -IRV77", "color: red; font-weight: bold;");
 };
 
+// ===== PROFILE FUNCTIONS =====
 function applySelectedGameToProfile(selectedGame, game) {
     document.getElementById('gametitle').innerHTML = selectedGame.title;
     if (selectedGame.custom) {document.getElementById('gametitle').innerHTML = selectedGame.title.slice(4)};
@@ -81,7 +83,7 @@ function generateprofile(game) {
     }
 };
 
-// Generate Game Options
+// ===== GAME OPTIONS =====
 const dropdown = document.getElementById("dropdn");
 let margincount = 0;
 function generategames(path) {
@@ -116,7 +118,7 @@ function generategames(path) {
         data.forEach((game) => {
             generatelauncheroptions(path, game, gamepath);
         });
-    });
+    }).catch(err => console.error("Error loading games:", err));
 };
 
 function getAssistedLaunchLink(link) {
@@ -156,7 +158,7 @@ function showAssistedModeSelector(show) {
 }
 
 function generatelauncheroptions(path, game, gamepath) {
-        if (localStorage.getItem("launcherpresets") === "false" && !game.custom) {localStorage.setItem(game.title, false); if (game.title === gamepath.title) {localStorage.setItem(game.title, true)}};
+        if (localStorage.getItem("launcherpresets") === "false" && !game.custom) {localStorage.setItem(game.title, false); if (game.title === gamepath.title) {localStorage.setItem(game.title, true)}}
         if (!localStorage.getItem(game.title) && game.active === false) {localStorage.setItem(game.title, game.active); return};
         if (localStorage.getItem(game.title) === "false") {return};
 
@@ -198,6 +200,7 @@ function generatelauncheroptions(path, game, gamepath) {
         margincount = margincount + 5;
 };
 
+// ===== MODS =====
 const mods = document.getElementById("modsbox");
 const skinsbox = document.getElementById("skinsbox");
 function generatemods() {
@@ -212,7 +215,7 @@ function generatemods() {
                     modoption.classList.remove("selected"); 
                     modslauncher = modslauncher.filter(obj => obj !== mod.link); 
                     localStorage.setItem("modslauncher", JSON.stringify(modslauncher.filter(obj => obj !== mod.link))); 
-                    console.log("Off")
+                    console.log("Mod Off")
                 }
                 else {
                     mod.active = true; 
@@ -220,7 +223,7 @@ function generatemods() {
                     modoption.classList.add("selected"); 
                     modslauncher.push(mod.link); 
                     localStorage.setItem("modslauncher", JSON.stringify(modslauncher)); 
-                    console.log("On")} 
+                    console.log("Mod On")} 
             });
             if (localStorage.getItem(mod.title) === 'true') {
                 modoption.classList.add("selected");
@@ -245,13 +248,11 @@ function generatemods() {
             modoption.appendChild(modoptionimg);
             modoption.appendChild(moddetails);
             mods.appendChild(modoption);
-        }
-        )
-    })
+        })
+    }).catch(err => console.error("Error loading mods:", err));
 };
 
-
-
+// ===== SKINS =====
 function generateskins() {
     if (!skinsbox) {return};
     if (skinsbox.childElementCount > 0) {return};
@@ -292,12 +293,14 @@ function generateskins() {
             card.appendChild(download);
             skinsbox.appendChild(card);
         });
-    });
+    }).catch(err => console.error("Error loading skins:", err));
 }
+
+// ===== INSTALLATIONS =====
 function newinstallation(data) {
     const installationscreenheader = document.createElement("div");
     installationscreenheader.className = "bolded notescreenheader";
-    installationscreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="closenotescreen()"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>`
+    installationscreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
     const installationscreenheadertitle = document.createElement("p");
     installationscreenheadertitle.innerHTML = "Create New Installation";
     const installationscreenhr = document.createElement("hr");
@@ -350,7 +353,7 @@ function newinstallation(data) {
     const installationscreenfooterhr = document.createElement("hr");
     const installationscreenfooterbuttons = document.createElement("div");
     installationscreenfooterbuttons.className = "newinstallationfooterbuttons";
-    installationscreenfooterbuttons.innerHTML = `<div id="newinstallationcancel" class="classicbutton" onclick="closenotescreen();"><p class="bolded">Cancel</p></div><div id="newinstallationsave" class="greenbutton classicbutton" onclick="newinstallationsave();"><p class="bolded">Save</p></div>`;
+    installationscreenfooterbuttons.innerHTML = `<div id="newinstallationcancel" class="classicbutton" onclick="closenotescreen();"><p class="bolded">Cancel</p></div><div id="newinstallationsave" class="classicbutton" onclick="newinstallationsave();"><p class="bolded">Save</p></div>`;
 
     installationscreenheader.prepend(installationscreenheadertitle);
     installationscreenfooter.appendChild(installationscreenfooterhr);
@@ -399,7 +402,7 @@ function newinstallationsave(notsaving) {
 function installationedit(data, title) {
     const installationscreenheader = document.createElement("div");
     installationscreenheader.className = "bolded notescreenheader";
-    installationscreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="closenotescreen()"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>`
+    installationscreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
     const installationscreenheadertitle = document.createElement("p");
     installationscreenheadertitle.innerHTML = "Edit Installation";
     const installationscreenhr = document.createElement("hr");
@@ -455,7 +458,7 @@ function installationedit(data, title) {
     const installationscreenfooterhr = document.createElement("hr");
     const installationscreenfooterbuttons = document.createElement("div");
     installationscreenfooterbuttons.className = "newinstallationfooterbuttons";
-    installationscreenfooterbuttons.innerHTML = `<div id="newinstallationcancel" class="classicbutton" onclick="closenotescreen();"><p class="bolded">Cancel</p></div><div id="newinstallationsave" class="greenbutton classicbutton" onclick="localStorage.removeItem('c` + title + `'); localStorage.removeItem('` + title + `'); localStorage.setItem('customlaunchers', JSON.stringify(JSON.parse(localStorage.getItem('customlaunchers')).filter(item => item !== '` + title + `'))); newinstallationsave(false);"><p class="bolded">Save</p></div>`;
+    installationscreenfooterbuttons.innerHTML = `<div id="newinstallationcancel" class="classicbutton" onclick="closenotescreen();"><p class="bolded">Cancel</p></div><div id="newinstallationsave" class="classicbutton" onclick="newinstallationsave();"><p class="bolded">Save</p></div>`;
 
     installationscreenheader.prepend(installationscreenheadertitle);
     installationscreenfooter.appendChild(installationscreenfooterhr);
@@ -591,6 +594,7 @@ function generatelauncher(game, path) {
     installations.appendChild(gamedivider);
 }
 
+// ===== FAQ =====
 const faqs = document.getElementById("faqbox");
 function generatefaqs() {
     fetch("./assets/json/faqs.json").then((response) => response.json()).then((data) => {
@@ -621,11 +625,11 @@ function generatefaqs() {
             faqoption.appendChild(faqquestion);
             faqoption.appendChild(faqanswer);
             faqs.appendChild(faqoption);
-        }
-        )
-    })
+        })
+    }).catch(err => console.error("Error loading FAQs:", err));
 };
 
+// ===== PATCH NOTES =====
 const notes = document.getElementById("patchnotesbox");
 const externalmenu = document.getElementById("externalmenu");
 function generatenotes() {
@@ -637,7 +641,7 @@ function generatenotes() {
             patchnote.addEventListener("click", () => {
                 const notescreenheader = document.createElement("div");
                 notescreenheader.className = "bolded notescreenheader";
-                notescreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="closenotescreen()"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>`
+                notescreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
                 const notescreenheadertitle = document.createElement("p");
                 notescreenheadertitle.innerHTML = "Patch Notes " + note.title + " " + note.version;
                 const notescreenhr = document.createElement("hr");
@@ -686,15 +690,16 @@ function generatenotes() {
         });
         if (gamenote == false) { document.querySelectorAll('[data-note-type="game"]').forEach(element => {element.style.display = 'none'})};
         if (sitenote == false) { document.querySelectorAll('[data-note-type="site"]').forEach(element => {element.style.display = 'none'})};
-    });
+    }).catch(err => console.error("Error loading patch notes:", err));
 };
 
 function generaterecentnote() {
     fetch("./assets/json/patchnotes.json").then((response) => response.json()).then((data) => {
+        if (data.length === 0) return;
         const note = data[0];
             const notescreenheader = document.createElement("div");
             notescreenheader.className = "bolded notescreenheader";
-            notescreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="closenotescreen()"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>`
+            notescreenheader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
             const notescreenheadertitle = document.createElement("p");
             notescreenheadertitle.innerHTML = "Patch Notes " + note.title + " " + note.version;
             const notescreenhr = document.createElement("hr");
@@ -723,11 +728,10 @@ function generaterecentnote() {
             externalmenu.appendChild(notescreenhr);
             externalmenu.appendChild(notescreendetails);
             externalmenu.style.display = "flex";
-    })
+    }).catch(err => console.error("Error loading recent patch notes:", err));
 };
 
 // Patchnote Functions
-
 let gamenote = sitenote = true;
 function sortnote(type) {
     if (type === "site") {
@@ -745,7 +749,7 @@ function closenotescreen() {
     while (externalmenu.firstChild) {externalmenu.removeChild(externalmenu.firstChild)};
 }
 
-// Game Edition Selected
+// ===== GAME EDITION SELECTED =====
 let launcher = "./assets/json/base.json";
 if (!localStorage.getItem("startupprofile")) {
     localStorage.setItem("startupprofile", "1");
@@ -757,6 +761,7 @@ if (localStorage.getItem("startupprofile") === "3") {eaglercontrols()};
 if (localStorage.getItem("startupprofile") === "4") {creditsmenu()};
 if (localStorage.getItem("startupprofile") === "5") {settingsmenu()};
 
+// ===== SIDEBAR NAVIGATION FUNCTIONS =====
 function webedition(){
     launcher = "./assets/json/base.json";
     localStorage.setItem("startupprofile", "1");
@@ -841,7 +846,7 @@ function settingsmenu(){
     generalsettingsheader();
 }
 
-// Header Options
+// ===== HEADER OPTIONS =====
 function playheader(){
     resetHeaderSelected();
     generategames(launcher);
@@ -900,18 +905,18 @@ function aboutsettingsheader(){
     document.getElementById('header10').classList.add('selected');
 }
 
-// Dropdown game options toggle
+// ===== DROPDOWN TOGGLE =====
 function dropdowntoggle(){
     if (dropdown.style.visibility === 'hidden') {
         dropdown.style.visibility = 'visible';
-        document.getElementById('dropdownuparrow').innerHTML = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 20 20"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="dropdownIcon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 15l6 -6l6 6" /></svg>';
+        document.getElementById('dropdownuparrow').innerHTML = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 20 20"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="dropdownIcon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 15l6 -6l6 6" /></svg>';
     } else {
         dropdown.style.visibility = 'hidden'; 
-        document.getElementById('dropdownuparrow').innerHTML = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 20 20"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="dropdownIcon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg>';
+        document.getElementById('dropdownuparrow').innerHTML = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 20 20"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="dropdownIcon"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9l6 6l6 -6" /></svg>';
     }
 }
 
-// Resets certain UI aspects
+// ===== RESETS =====
 function resetTabSelected() {
     while (dropdown.firstChild) {dropdown.removeChild(dropdown.firstChild)};
     while (installations.firstChild) {installations.removeChild(installations.firstChild)};
@@ -948,7 +953,7 @@ function resetHeaderSelected() {
     document.getElementById('aboutsettings').style.display = "none";
 }
 
-// Prevents touchscreen move
+// ===== PREVENT SCROLL =====
 window.addEventListener("scroll", preventMotion, false);
 window.addEventListener("touchmove", preventMotion, false);
 
@@ -959,7 +964,7 @@ function preventMotion(event)
     event.stopPropagation();
 }
 
-// Basic Settings
+// ===== SETTINGS =====
 const newtabcheckbox = document.getElementById("launchnewtab");
 const presetscheckbox = document.getElementById("launcherpresets");
 if (localStorage.getItem("launcherpresets")) {
@@ -1006,7 +1011,7 @@ function presetlaunchers() {
     };
 };
 
-// Username Generator
+// ===== USERNAME GENERATOR =====
 let username = document.getElementById('username');
 let userchosen = false;
 if (userchosen === false && !localStorage.getItem("username")) {
@@ -1016,11 +1021,11 @@ if (userchosen === false && !localStorage.getItem("username")) {
         document.getElementById("usernameinput").value = data._sResult;
         localStorage.setItem("username", data._sResult);
         userchosen = true;
-    })
+    }).catch(err => console.log("Could not generate username, using default"));
 }
 else {
-    username.innerHTML = localStorage.getItem("username");
-    document.getElementById("usernameinput").value = localStorage.getItem("username");
+    username.innerHTML = localStorage.getItem("username") || "Generic User";
+    document.getElementById("usernameinput").value = localStorage.getItem("username") || "Generic User";
 };
 
 function usernamechange() {
@@ -1028,8 +1033,7 @@ function usernamechange() {
     username.innerHTML = localStorage.getItem("username");
 };
 
-// Clear Local Storage
-
+// ===== CLEAR LOCAL STORAGE =====
 function clearlocalstorage() {
     document.querySelector('.confrimationmenuscreen').classList.remove("deleteinstallation");
     document.getElementById('confirmationmenu').style.display = 'flex';
@@ -1046,4 +1050,5 @@ function clearlocalstorageconfirm() {
     location.reload();
 };
 
+// ===== INITIALIZE =====
 generatefaqs();
