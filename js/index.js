@@ -17,26 +17,25 @@ function errorNA(text) {
     }, 3200);
 }
 
-// Last Played Game Option
-let selectedGame1 = localStorage.getItem("basegame");
-let selectedGame2 = localStorage.getItem("moddedgame");
-let selectedGame3 = localStorage.getItem("assisted");
+// Last Played Game Option - Changed to var to avoid redeclaration errors
+var selectedGame1 = localStorage.getItem("basegame");
+var selectedGame2 = localStorage.getItem("moddedgame");
+var selectedGame3 = localStorage.getItem("assisted");
 const assistedUserscripts = {
     mobile: "https://irv77.github.io/EaglerPocketMobile/eaglerpocketmobile.user.js",
     controller: "https://irv77.github.io/EaglerConsole/eaglerconsole.user.js"
 };
-let selectedAssistedMode = localStorage.getItem("assistedmode") || "mobile";
+var selectedAssistedMode = localStorage.getItem("assistedmode") || "mobile";
 if (!assistedUserscripts[selectedAssistedMode]) {selectedAssistedMode = "mobile"};
 localStorage.setItem("assistedmode", selectedAssistedMode);
-let modslauncher
-if (localStorage.getItem("modslauncher")) {modslauncher = JSON.parse(localStorage.getItem("modslauncher"))};
+var modslauncher = localStorage.getItem("modslauncher") ? JSON.parse(localStorage.getItem("modslauncher")) : [];
 if (!localStorage.getItem("launcherpresets")) {
     localStorage.setItem("customlaunchers", "[]");
     localStorage.setItem("customlaunchersnumber", 0);
     localStorage.setItem("launcherpresets", true);
     localStorage.setItem("launchnewtab", false);
 };
-let customlaunchersnumber = localStorage.getItem("customlaunchersnumber").padStart(2, "0");
+var customlaunchersnumber = localStorage.getItem("customlaunchersnumber").padStart(2, "0");
 if (customlaunchersnumber > 99) {
     console.log("%cWell.. You found an easter egg. You broke the launcher. Sure I can easily fix it. But this is a rare bug. Report if you found this bug, then I will. -IRV77", "color: red; font-weight: bold;");
 };
@@ -51,8 +50,8 @@ function applySelectedGameToProfile(selectedGame, game) {
 }
 
 function generateprofile(game) {
-    let selectedGame = "";
-    let running = false;
+    var selectedGame = "";
+    var running = false;
     if (!selectedGame1) {
         fetch("./assets/json/base.json").then((response) => response.json()).then((data) => {
             selectedGame1 = JSON.stringify(data[0]); localStorage.setItem("basegame", selectedGame1);
@@ -77,31 +76,31 @@ function generateprofile(game) {
     if (running === true) {
         applySelectedGameToProfile(selectedGame, game);
     }
-    if (!modslauncher) {
-        localStorage.setItem("modslauncher", "");
+    if (!modslauncher || modslauncher.length === 0) {
+        localStorage.setItem("modslauncher", "[]");
         modslauncher = [];
     }
 };
 
 // ===== GAME OPTIONS =====
 const dropdown = document.getElementById("dropdn");
-let margincount = 0;
+var margincount = 0;
 function generategames(path) {
     margincount = 0;
     if (localStorage.getItem("customlaunchers")) {
-        let gamepath;
+        var gamepath;
         if (path === "./assets/json/base.json") {gamepath = "basegame"};
         if (path === "./assets/json/modded.json") {gamepath = "moddedgame"};
         if (path === "./assets/json/assisted.json") {gamepath = "assisted"};
 
         JSON.parse(localStorage.getItem("customlaunchers")).forEach((launcher) => {
-            let game = JSON.parse(localStorage.getItem("c" + launcher));
+            var game = JSON.parse(localStorage.getItem("c" + launcher));
             if (game.custom != gamepath) {return};
             generatelauncheroptions(path, game, "");
         });
     };
     fetch(path).then((response) => response.json()).then((data) => {
-        let gamepath;
+        var gamepath;
         if (path === "./assets/json/base.json") {
             if (!localStorage.getItem("basegame")) {localStorage.setItem("basegame", JSON.stringify(data[0]))};
             gamepath = JSON.parse(localStorage.getItem("basegame"));
@@ -371,13 +370,13 @@ function newinstallation(data) {
 };
 
 function newinstallationsave(notsaving) {
-    let customlaunchname = document.getElementById("installationscreenname").value;
-    if (!customlaunchname) {customlaunchname = "New Installation";};
-    let gamepath;
+    var customlaunchname = document.getElementById("installationscreenname").value;
+    if (!customlaunchname) {customlaunchname = "New Installation"};
+    var gamepath;
     if (localStorage.getItem("startupprofile") == 1) {gamepath = "basegame"};
     if (localStorage.getItem("startupprofile") == 2) {gamepath = "moddedgame"};
     if (localStorage.getItem("startupprofile") == 3) {gamepath = "assisted"};
-    let customlaunch = {
+    var customlaunch = {
         "title": customlaunchersnumber + "cl" + customlaunchname,
         "version": document.getElementById("installationscreendropdown").selectedOptions[0].innerText,
         "icon": document.querySelector(".newinstallationicons").getAttribute("data-icon"),
@@ -385,7 +384,7 @@ function newinstallationsave(notsaving) {
         "active": true,
         "custom": gamepath
     };
-    let customlaunchers = JSON.parse(localStorage.getItem("customlaunchers"));
+    var customlaunchers = JSON.parse(localStorage.getItem("customlaunchers"));
     customlaunchers.push(customlaunch.title);
     customlaunchersnumber++
     localStorage.setItem("customlaunchers", JSON.stringify(customlaunchers));
@@ -503,7 +502,7 @@ function generatelaunchers(path) {
         })}).then(() => {generatecustomlaunchers(path)});
     };
     if (localStorage.getItem("launcherpresets") == "false") {
-        let gamepath;
+        var gamepath;
         if (path === "./assets/json/base.json") {gamepath = JSON.parse(localStorage.getItem("basegame"))};
         if (path === "./assets/json/modded.json") {gamepath = JSON.parse(localStorage.getItem("moddedgame"))};
         if (path === "./assets/json/assisted.json") {gamepath = JSON.parse(localStorage.getItem("assisted"))};
@@ -514,13 +513,13 @@ function generatelaunchers(path) {
 
 function generatecustomlaunchers(path) {
     if (localStorage.getItem("customlaunchers")) {
-        let gamepath;
+        var gamepath;
         if (path === "./assets/json/base.json") {gamepath = "basegame"};
         if (path === "./assets/json/modded.json") {gamepath = "moddedgame"};
         if (path === "./assets/json/assisted.json") {gamepath = "assisted"};
 
         JSON.parse(localStorage.getItem("customlaunchers")).forEach((launcher) => {
-            let game = JSON.parse(localStorage.getItem("c" + launcher));
+            var game = JSON.parse(localStorage.getItem("c" + launcher));
             if (game.custom != gamepath) {return};
             generatelauncher(game, path);
         });
@@ -528,7 +527,7 @@ function generatecustomlaunchers(path) {
 };
 
 function generatelauncher(game, path) {
-    let gamepath;
+    var gamepath;
     if (path === "./assets/json/base.json") {gamepath = JSON.parse(localStorage.getItem("basegame"))};
     if (path === "./assets/json/modded.json") {gamepath = JSON.parse(localStorage.getItem("moddedgame"))};
     if (path === "./assets/json/assisted.json") {gamepath = JSON.parse(localStorage.getItem("assisted"))};
@@ -732,7 +731,7 @@ function generaterecentnote() {
 };
 
 // Patchnote Functions
-let gamenote = sitenote = true;
+var gamenote = sitenote = true;
 function sortnote(type) {
     if (type === "site") {
         if (gamenote == true) { document.querySelectorAll('[data-note-type="game"]').forEach(element => {element.style.display = 'none';}); gamenote = false;}
@@ -750,7 +749,7 @@ function closenotescreen() {
 }
 
 // ===== GAME EDITION SELECTED =====
-let launcher = "./assets/json/base.json";
+var launcher = "./assets/json/base.json";
 if (!localStorage.getItem("startupprofile")) {
     localStorage.setItem("startupprofile", "1");
 }
@@ -921,11 +920,11 @@ function resetTabSelected() {
     while (dropdown.firstChild) {dropdown.removeChild(dropdown.firstChild)};
     while (installations.firstChild) {installations.removeChild(installations.firstChild)};
     for (var i = 1; i < 7; i++) { 
-        let gtabs = document.getElementById('gtabs' + [i]);
+        var gtabs = document.getElementById('gtabs' + [i]);
         gtabs.classList.remove('selected');
     };
     for (var i = 1; i < 11; i++) { 
-        let headers = document.getElementById('header' + [i]);
+        var headers = document.getElementById('header' + [i]);
         headers.style.display = "block";
     };
     document.getElementById('settings').style.display = "none";
@@ -937,7 +936,7 @@ function resetHeaderSelected() {
     while (mods.firstChild) {mods.removeChild(mods.firstChild)};
     while (notes.firstChild) {notes.removeChild(notes.firstChild)};
     for (var i = 1; i < 11; i++) { 
-        let headers = document.getElementById('header' + [i]);
+        var headers = document.getElementById('header' + [i]);
         headers.classList.remove('selected'); 
     };
     document.getElementById('game-bg').style.display = "none";
@@ -1012,8 +1011,8 @@ function presetlaunchers() {
 };
 
 // ===== USERNAME GENERATOR =====
-let username = document.getElementById('username');
-let userchosen = false;
+var username = document.getElementById('username');
+var userchosen = false;
 if (userchosen === false && !localStorage.getItem("username")) {
     fetch("https://genr8rs.com/api/Content/Fun/XboxNameGenerator?genr8rsUserId=1748114452.233968321c14391c2&_sGameGenre=any").then((response) => response.json()).then((data) => {
         if (!data) {return};
