@@ -4,310 +4,914 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ampler Launcher</title>
-    <link rel="stylesheet" href="https://irv77.github.io/AmplerLauncher/css/style.css">
-    <link rel="stylesheet" media="screen and (max-width: 1100px)" href="https://irv77.github.io/AmplerLauncher/css/screensize.css">
-    <link rel="stylesheet" media="screen and (max-height: 550px)" href="https://irv77.github.io/AmplerLauncher/css/screensize.css">
-    <link rel="shortcut icon" href="https://irv77.github.io/AmplerLauncher/assets/images/logo.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>Eaglercraft Launcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' font-weight='bold'>⛏</text></svg>" type="image/x-icon">
+    
     <style>
-        #assistedmodewrapper {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 1vw;
-            width: 11vw;
-            display: none;
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .bolded {
+            font-weight: 700;
+        }
+
+        /* Main Layout */
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .sidebar {
+            position: relative;
+            width: 15%;
+            min-width: 180px;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            border-right: 2px solid #2d5016;
+            display: flex;
             flex-direction: column;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .mainPage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Sidebar Options */
+        .sidebarOptions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+
+        .sidebarOptions:hover {
+            background-color: rgba(45, 80, 22, 0.3);
+            border-left-color: #4CAF50;
+            color: #ffffff;
+        }
+
+        .sidebarOptions.selected {
+            background-color: rgba(45, 80, 22, 0.5);
+            border-left-color: #4CAF50;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .sidebarOptions img {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .gTabsText p {
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .eaglercraftText {
+            font-size: 0.8rem;
+            color: #2d5016;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .sidebarBottom {
+            margin-top: auto;
+            border-top: 1px solid #2d5016;
+            padding-top: 1rem;
+        }
+
+        .launcherVersion {
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid #2d5016;
+            font-size: 0.85rem;
+            color: #888888;
+        }
+
+        /* Game Header */
+        .gameHeader {
+            background: linear-gradient(90deg, #0d0d0d 0%, #1a1a1a 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid #2d5016;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .currentGame {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .gameTabs {
+            list-style: none;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .headerButtons {
+            padding: 0.5rem 1rem;
+            background-color: rgba(45, 80, 22, 0.4);
+            border: 1px solid #2d5016;
+            color: #cccccc;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .headerButtons:hover {
+            background-color: rgba(45, 80, 22, 0.6);
+            border-color: #4CAF50;
+            color: #ffffff;
+        }
+
+        .headerButtons.selected {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+            color: #ffffff;
+        }
+
+        /* Main Content Area */
+        .mainContent {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        #game-bg {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 0.2vw;
-            color: white;
-            font-size: 1.05vw;
-            line-height: 1.15vw;
-            text-shadow: 0 0 0.5vw black;
+            position: relative;
         }
 
-        #assistedmodeselect {
-            width: 8vw;
-            min-height: 1.8vw;
-            padding: 0.15vw 0.45vw;
-            color: white;
-            background: rgba(0, 0, 0, 0.65);
-            border: 0.12vw solid rgba(255, 255, 255, 0.45);
-            border-radius: 0.35vw;
-            font: inherit;
-            line-height: 1.2vw;
+        #game-title {
+            max-width: 80%;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.5));
+        }
+
+        /* Game Selection */
+        #gameSelection {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 0.5rem;
+            position: relative;
+        }
+
+        .dropdownSelector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(45, 80, 22, 0.4);
+            border: 1px solid #4CAF50;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdownSelector:hover {
+            background-color: rgba(45, 80, 22, 0.6);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .centeredIcon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .centeredIcon img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .versionText p {
+            margin: 0;
+        }
+
+        .versionText .bolded {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        .versionText p:last-child {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .dropdownIcon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #4CAF50;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdownMenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: rgba(30, 30, 30, 0.95);
+            border: 1px solid #4CAF50;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            min-width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdownOptions {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dropdownOption {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dropdownOption:hover {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .playButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #2d5016 0%, #4CAF50 100%);
+            border: none;
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .playButton:hover {
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+            transform: scale(1.05);
+        }
+
+        .playButton:active {
+            transform: scale(0.95);
+        }
+
+        .username {
+            font-size: 1.1rem;
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Content Sections */
+        #mods, #faq, #installations, #skins, #patchNotes, #contributors, #credits, #settings {
+            padding: 2rem 3rem;
+            display: none;
+        }
+
+        #mods.active, #faq.active, #installations.active, #skins.active, 
+        #patchNotes.active, #contributors.active, #credits.active, #settings.active,
+        #game-bg.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modssubtitle {
+            color: #cccccc;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+
+        .faqtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        .classicbutton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(45, 80, 22, 0.6);
+            border: 1px solid #4CAF50;
+            border-radius: 0.25rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .classicbutton:hover {
+            background-color: #4CAF50;
+            color: #000000;
+        }
+
+        .redbutton {
+            background-color: rgba(211, 47, 47, 0.6);
+            border-color: #d32f2f;
+            color: #ffffff;
+        }
+
+        .redbutton:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Error Messages */
+        .error {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(30, 30, 30, 0.95);
+            border: 2px solid #d32f2f;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 400px;
+            z-index: 2000;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        .error p {
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 12%;
+                min-width: 150px;
+            }
+
+            .gameHeader {
+                padding: 1rem 1.5rem;
+            }
+
+            .currentGame {
+                font-size: 1.2rem;
+            }
+
+            .headerButtons {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            #mainContent {
+                padding: 1.5rem;
+            }
+
+            #gameSelection {
+                padding: 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .playButton {
+                min-width: 120px;
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: unset;
+                flex-direction: row;
+                padding: 1rem 0;
+                border-right: none;
+                border-bottom: 2px solid #2d5016;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .sidebarOptions {
+                flex-shrink: 0;
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .sidebarOptions img {
+                width: 2rem;
+                height: 2rem;
+            }
+
+            .gTabsText {
+                display: none;
+            }
+
+            .sidebarOptions.selected .gTabsText {
+                display: block;
+            }
+
+            .sidebarBottom {
+                margin-left: auto;
+                border-top: none;
+                border-left: 1px solid #2d5016;
+                padding-top: 0;
+                padding-left: 1rem;
+            }
+
+            .launcherVersion {
+                display: none;
+            }
+
+            .gameHeader {
+                padding: 1rem;
+            }
+
+            .currentGame {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .gameTabs {
+                gap: 0.25rem;
+            }
+
+            .headerButtons {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .mainContent {
+                padding: 1rem;
+            }
+
+            #gameSelection {
+                padding: 1rem;
+                flex-direction: column-reverse;
+            }
+
+            .dropdownSelector {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .dropdownMenu {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .playButton {
+                width: 100%;
+            }
+
+            .username {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .sidebar {
+                padding: 0.75rem 0;
+            }
+
+            .sidebarOptions {
+                padding: 0.5rem 1rem;
+            }
+
+            .gameHeader {
+                padding: 0.75rem 1rem;
+            }
+
+            .gameTabs {
+                gap: 0.25rem;
+            }
+
+            .headerButtons {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            #gameSelection {
+                padding: 1rem;
+                gap: 1rem;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(45, 80, 22, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2d5016;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4CAF50;
+        }
+
+        /* Utilities */
+        hr {
+            border: none;
+            border-top: 1px solid #2d5016;
+            margin: 1rem 0;
+        }
+
+        input[type="text"],
+        input[type="checkbox"],
+        select {
+            background-color: rgba(45, 80, 22, 0.3);
+            border: 1px solid #2d5016;
+            color: #ffffff;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
             outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
         }
 
-        #assistedmodeselect:hover,
-        #assistedmodeselect:focus {
-            border-color: var(--ui-select-secodary);
-            background: rgba(0, 0, 0, 0.85);
-        }
-
-        #gameSelection.assisted-mode-active .dropdownSelector {
-            left: 12.5vw;
-            width: 18.5vw;
-        }
-
-        #gameSelection.assisted-mode-active .dropdownMenu {
-            left: 12.5vw;
-        }
-
-        #gameSelection.assisted-mode-active .dropdownOptions {
-            width: 18.5vw;
-        }
-
-        #gameSelection.assisted-mode-active .versionText {
-            margin-right: 1.2vw;
-            font-size: 1vw;
+        input[type="checkbox"]:checked {
+            background-color: #4CAF50;
         }
     </style>
-    <!-- Discord-->
-    <meta content="Ampler Launcher" property="og:title">
-    <meta content="A minecraft themed launcher for Eaglercraft!" property="og:description">
-    <meta content="https://irv77.github.io/AmplerLauncher/" property="og:url">
-    <meta content="https://irv77.github.io/AmplerLauncher/assets/images/logo.png" property="og:image">
-    <meta content="#786d81" data-react-helmet="true" name="theme-color">
+
     <script src="./js/index.js" defer></script>
 </head>
 
 <body>
     <div id="externalmenu"></div>
+    
+    <!-- Error Messages -->
     <div id="naerror" class="error">
         <div>
-            <p style="margin-left: 1vw;" class="bolded">SORRY!</p>
-            <p style="color: goldenrod;" id="errortext">This feature hasn't been made yet.</p>
+            <p class="bolded" style="color: #d32f2f;">ERROR!</p>
+            <p id="errortext">This feature hasn't been made yet.</p>
         </div>
     </div>
+    
     <div id="screenerror" class="error">
         <div>
-            <p style="margin-left: 1vw;" class="bolded">ERROR!</p>
+            <p class="bolded" style="color: #d32f2f;">ERROR!</p>
             <p>Currently this screen resolution is buggy.</p>
         </div>
     </div>
-    <div id="confirmationmenu">
-        <div class="confrimationmenuscreen">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onc[...]
-            <p class="bolded warningtitle"></p>
-            <p class="warningdesc"></p>
-            <div class="confirmationbuttons">
-                <div class="classicbutton" onclick="confirmationcancel();">
-                    <p class="bolded">Cancel</p>
-                </div>
-                <div class="redbutton classicbutton warningbutton">
-                    <p class="bolded">Yes, Delete</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div id="gtabs1" class="sidebarOptions" style="gap: 1vw;" onclick="location.href='https://discord.gg/xuu8TnSY4b'">
-            <img src="https://irv77.github.io/AmplerLauncher/assets/images/sidebar/m-discord.png"><div class="gTabsText"><p>Discord</p></div>
+        <div id="gtabs1" class="sidebarOptions" onclick="location.href='https://discord.gg/xuu8TnSY4b'" title="Join Discord">
+            <div style="width: 2.5rem; height: 2.5rem; background: #7289da; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">💬</div>
+            <div class="gTabsText"><p>Discord</p></div>
         </div>
-        <div onclick="webedition()" id="gtabs2" class="sidebarOptions selected">
-            <img src="https://irv77.github.io/AmplerLauncher/assets/images/sidebar/i-web.png">
+
+        <div onclick="showSection('game-bg')" id="gtabs2" class="sidebarOptions selected" title="Play">
+            <div style="width: 2.5rem; height: 2.5rem; background: #4CAF50; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">▶</div>
             <div class="gTabsText">
-                <p class="eaglercraftText"> EAGLERCRAFT : </p>
-                <p>Web Edition </p>
+                <p class="eaglercraftText">EAGLERCRAFT</p>
+                <p>Web Edition</p>
             </div>
         </div>
-        <div onclick="moddededition()" id="gtabs3" class="sidebarOptions">
-            <img src="https://irv77.github.io/AmplerLauncher/assets/images/sidebar/i-modded.png">
+
+        <div onclick="showSection('game-bg')" id="gtabs3" class="sidebarOptions" title="Modded Edition">
+            <div style="width: 2.5rem; height: 2.5rem; background: #FF9800; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">⚙</div>
             <div class="gTabsText">
-                <p class="eaglercraftText"> EAGLERCRAFT : </p>
-                <p>Modded Editions </p>
+                <p class="eaglercraftText">EAGLERCRAFT</p>
+                <p>Modded Editions</p>
             </div>
         </div>
-        <div onclick="eaglercontrols()" id="gtabs4" class="sidebarOptions">
-            <img src="https://irv77.github.io/AmplerLauncher/assets/images/sidebar/i-controls.png">
+
+        <div onclick="showSection('game-bg')" id="gtabs4" class="sidebarOptions" title="Mobile/Controller">
+            <div style="width: 2.5rem; height: 2.5rem; background: #2196F3; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">📱</div>
             <div class="gTabsText">
-                <p class="eaglercraftText"> EAGLERCRAFT : </p>
-                <p>Mobile/Controller </p>
+                <p class="eaglercraftText">EAGLERCRAFT</p>
+                <p>Mobile/Controller</p>
             </div>
         </div>
-        <div id="gtabs5" class="sidebarOptions sidebarBottom" onclick="creditsmenu()">
-            <img src="https://irv77.github.io/AmplerLauncher/assets/images/sidebar/m-credits.png"><div class="gTabsText"><p> Credits</p></div>
+
+        <div id="gtabs5" class="sidebarOptions sidebarBottom" onclick="showSection('credits')" title="Credits">
+            <div style="width: 2.5rem; height: 2.5rem; background: #9C27B0; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">📄</div>
+            <div class="gTabsText"><p>Credits</p></div>
         </div>
-        <div id="gtabs6" class="sidebarOptions sidebarBottom" onclick="settingsmenu()">
-            <img src="https://irv77.github.io/AmplerLauncher/assets/images/sidebar/m-settings.png"><div class="gTabsText"><p> Settings</p></div>
+
+        <div id="gtabs6" class="sidebarOptions sidebarBottom" onclick="showSection('settings')" title="Settings">
+            <div style="width: 2.5rem; height: 2.5rem; background: #607D8B; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">⚙</div>
+            <div class="gTabsText"><p>Settings</p></div>
         </div>
-        <div class="launcherVersion"><p>v1.5.00</p></div>
+
+        <div class="launcherVersion"><p>v2.0.00</p></div>
     </div>
+
+    <!-- Main Content -->
     <div class="mainPage">
         <div class="gameHeader">
             <p id="gameedition" class="currentGame bolded">EAGLERCRAFT WEB EDITION</p>
-                <ul class="gameTabs">
-                    <li id="header1" class="headerButtons selected" onclick="playheader()">Play</li>
-                    <li id="header2" class="headerButtons" onclick="modsheader()">Mods</li>
-                    <li id="header3" class="headerButtons" onclick="faqsheader()">FAQ</li>
-                    <li id="header4" class="headerButtons" onclick="installationheader()">Installations</li>
-                    <li id="header5" class="headerButtons" onclick="skinsheader()">Skins</li>
-                    <li id="header6" class="headerButtons" onclick="patchnotesheader()">Patch Notes</li>
-                    <li id="header7" class="headerButtons" onclick="contributorsheader()">Contributors</li>
-                    <li id="header8" class="headerButtons" onclick="creditsheader()">Credits</li>
-                    <li id="header9" class="headerButtons" onclick="generalsettingsheader()">General</li>
-                    <li id="header10" class="headerButtons" onclick="aboutsettingsheader()">About</li>
-                </ul>
-        </div>
-        <div id="mods">
-            <img class="modketplace-title" src="https://irv77.github.io/AmplerLauncher/assets/images/modketplace-title.png" alt="modketplace">
-            <p class="bolded modssubtitle">Community mods for the EaglerForge Installation.</p>
-            <hr style="margin-top: 2vh;">
-            <div id="modsbox"></div>
-        </div>
-        <div id="faq">
-            <p class="bolded faqtitle">Frequently Asked Questions</p>
-            <p>Here are some frequently asked questions about Ampler Launcher.</p>
-            <div id="faqbox"></div>
-        </div>
-        <div id="installations">
-            <div class="newinstallation">
-                <div id="newinstallationbutton" class="classicbutton" onclick="newinstallation('./assets/json/base.json');">
-                    <p class="bolded">New installation</p>
-                </div>
-            </div>
-            <div id="installationsbox"></div>
-        </div>
-        <div id="game-bg" style="background-image: url(https://irv77.github.io/AmplerLauncher/assets/images/web-edition.jpg);">
-            <img id="game-title" src="https://irv77.github.io/AmplerLauncher/assets/images/web-title.png" alt="eaglercraft">
+            <ul class="gameTabs">
+                <li class="headerButtons selected" onclick="switchTab('game-bg', this)">Play</li>
+                <li class="headerButtons" onclick="switchTab('mods', this)">Mods</li>
+                <li class="headerButtons" onclick="switchTab('faq', this)">FAQ</li>
+                <li class="headerButtons" onclick="switchTab('installations', this)">Installations</li>
+                <li class="headerButtons" onclick="switchTab('skins', this)">Skins</li>
+                <li class="headerButtons" onclick="switchTab('patchNotes', this)">Patch Notes</li>
+                <li class="headerButtons" onclick="switchTab('contributors', this)">Contributors</li>
+                <li class="headerButtons" onclick="switchTab('credits', this)">Credits</li>
+                <li class="headerButtons" onclick="switchTab('settings', this)">Settings</li>
+            </ul>
         </div>
 
-        <div id="skins">
-            <div style="padding: 2vh 3vw 7vh;">
-                <p class="bolded patchnotes-title">Skin Library</p>
-                <p>Preview and download skins you can use in compatible Eaglercraft clients.</p>
-                <hr style="margin-top: 2vh;">
-                <div id="skinsbox" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(12vw,1fr));gap:1vw;padding-top:1vw;"></div>
-            </div>
-        </div>
-        <div id="patchNotes">
-            <div style="padding: 2vh 3vw 7vh;">
-                <p class="bolded patchnotes-title">Versions</p>
-                <div class="versionscontainer">
-                    <input class="versionBox" type="checkbox" onchange="sortnote('game')" checked><p>Game Releases</p><input class="versionBox" type="checkbox" onchange="sortnote('site')" checked[...]
+        <div class="mainContent" id="mainContent">
+            <!-- Game Background -->
+            <div id="game-bg" class="active" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d5016 100%); flex-direction: column; align-items: center; justify-content: center; gap: 2rem; position: relative;">
+                <h1 style="font-size: 4rem; text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); color: #4CAF50; margin-bottom: 2rem;">⛏ EAGLERCRAFT</h1>
+                
+                <div id="gameSelection" style="width: 100%; max-width: 600px; background: rgba(0, 0, 0, 0.5); padding: 2rem; border-radius: 0.5rem; border: 2px solid #2d5016;">
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 1rem; color: #4CAF50; font-weight: bold;">Select Version:</label>
+                        <select id="versionSelect" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem;">
+                            <option value="1.12.2">Eaglercraft 1.12.2</option>
+                            <option value="1.8">Eaglercraft 1.8</option>
+                        </select>
+                    </div>
+
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 1rem; color: #4CAF50; font-weight: bold;">Username:</label>
+                        <input type="text" id="usernameinput" placeholder="Enter username" style="width: 100%; padding: 0.75rem;" onkeyup="usernamechange()">
+                    </div>
                 </div>
+
+                <button class="playButton" onclick="launchGame()" style="margin-top: 2rem;">
+                    ▶ LAUNCH GAME
+                </button>
+
+                <p style="text-align: center; color: #cccccc; font-size: 0.9rem; margin-top: 2rem;">
+                    Eaglercraft is Minecraft on the Web!
+                </p>
+            </div>
+
+            <!-- Mods Section -->
+            <div id="mods">
+                <h2 style="color: #4CAF50; margin-bottom: 1rem; font-size: 1.5rem;">Mod Marketplace</h2>
+                <p class="modssubtitle">Community mods for the EaglerForge Installation.</p>
                 <hr>
-                <div id="patchnotesbox"></div>
-            </div>
-        </div>
-        <div id="contributors">
-            <div style="text-align: center;">
-                <p class="bolded contributorstitle">Contributors</p>
-                <p>People who have added to the Ampler Launcher</p>
-            </div>
-            <div class="contributorsdiv">
-                <div class="contributortile">
-                    <div class="contributorside">
-                        <p class="bolded contributoruser">IRV77</p>
-                        <p class="contributordescription">Creator of Ampler Launcher</p>
+                <div id="modsbox" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                    <div style="background: rgba(45, 80, 22, 0.3); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #2d5016;">
+                        <p class="bolded" style="color: #4CAF50;">Coming Soon</p>
+                        <p style="color: #cccccc; font-size: 0.9rem;">Mods will be available soon!</p>
                     </div>
-                        <img src="https://irv77.github.io/AmplerLauncher/assets/images/credits/irv77.png">
-                </div>
-                <div class="contributortile">
-                    <div class="contributorside">
-                        <p class="bolded contributoruser">CrimsonWeb</p>
-                        <p class="contributordescription">Custom installation code and error code</p>
-                    </div>
-                        <img src="https://irv77.github.io/AmplerLauncher/assets/images/credits/crimsonweb.png">
-                </div>
-                <div class="contributortile">
-                    <div class="contributorside">
-                        <p class="bolded contributoruser">マキシー</p>
-                        <p class="contributordescription">Color Themes CSS</p>
-                    </div>
-                        <img src="https://irv77.github.io/AmplerLauncher/assets/images/credits/oip.png">
                 </div>
             </div>
-        </div>
-        <div id="credits">
-            <div style="text-align: center;">
-                <p class="bolded contributorstitle">Credits</p>
-                <p>Resources that are used</p>
-            </div>
-            <div class="contributorsdiv">
-                <div class="credittile">
-                    <div class="contributorside">
-                        <p class="bolded contributoruser">Web Jeet</p>
-                        <p class="contributordescription">Original minecraft launcher concept code</p>
-                    </div>
-                        <img src="https://irv77.github.io/AmplerLauncher/assets/images/credits/web-jeet.png">
-                </div>
-                <div class="credittile">
-                    <div class="contributorside">
-                        <p class="bolded contributoruser">Eaglercraft</p>
-                        <p class="contributordescription">Minecraft code for website</p>
-                    </div>
-                        <img src="https://irv77.github.io/AmplerLauncher/assets/images/icons/eaglercraft.png">
+
+            <!-- FAQ Section -->
+            <div id="faq">
+                <h2 class="faqtitle">Frequently Asked Questions</h2>
+                <p style="color: #cccccc; margin-bottom: 2rem;">Here are some frequently asked questions about Eaglercraft.</p>
+                <div id="faqbox">
+                    <details style="background: rgba(45, 80, 22, 0.2); padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #2d5016;">
+                        <summary style="cursor: pointer; color: #4CAF50; font-weight: bold;">What is Eaglercraft?</summary>
+                        <p style="color: #cccccc; margin-top: 0.75rem;">Eaglercraft is Minecraft 1.5.2 compiled to WebGL that runs in your browser. No installation required!</p>
+                    </details>
+                    <details style="background: rgba(45, 80, 22, 0.2); padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #2d5016;">
+                        <summary style="cursor: pointer; color: #4CAF50; font-weight: bold;">Is it free?</summary>
+                        <p style="color: #cccccc; margin-top: 0.75rem;">Yes, Eaglercraft is completely free to play!</p>
+                    </details>
                 </div>
             </div>
-        </div>
-        <div id="settings">
-            <div id="generalsettings">
-                <p class="bolded settingstitle">LAUNCHER SETTINGS</p>
-                <div class="settingoption"><input id="launcherpresets" class="settingsbox" type="checkbox" onchange="presetlaunchers()"><p>Preset launchers</p></div>
-                <div class="settingoption"><input id="launchnewtab" class="settingsbox" type="checkbox" onchange="launchnewtab()"><p>Launch game in new window</p></div>
-                <p class="bolded settingstitle">LAUNCHER USERNAME</p>
-                <input id="usernameinput" type="text" autocomplete="off" placeholder="Username" onkeyup="usernamechange()">
-                <p class="bolded settingstitle">EAGLER WEB EDITION SETTINGS</p>
-                <p style="font-style: italic;">More Coming Soon!</p>
-                <div class="clearstoragebutton" onclick="clearlocalstorage()">
-                    <p class="bolded">Clear All Local Storage</p>
+
+            <!-- Installations Section -->
+            <div id="installations">
+                <h2 style="color: #4CAF50; margin-bottom: 1rem; font-size: 1.5rem;">Installations</h2>
+                <button class="classicbutton" onclick="alert('New installation feature coming soon!')" style="margin-bottom: 2rem;">
+                    + New Installation
+                </button>
+                <div id="installationsbox">
+                    <p style="color: #cccccc;">No installations yet. Create one to get started!</p>
                 </div>
             </div>
-            <div id="aboutsettings">
-                <div style="position: relative;">
-                    <div class="whatsnewbutton" onclick="generaterecentnote();">
-                        <p class="bolded">What's New</p>
-                    </div>
-                    <p class="bolded settingstitle">AMPLER LAUNCHER</p>
-                    <p class="settingsdetails">A minecraft themed launcher for Eaglercraft!</p>
-                    <p class="settingsdetails">Created by: IRV77, Vulconcium</p>
-                </div>
+
+            <!-- Skins Section -->
+            <div id="skins">
+                <h2 style="color: #4CAF50; margin-bottom: 1rem; font-size: 1.5rem;">Skin Library</h2>
+                <p style="color: #cccccc; margin-bottom: 2rem;">Preview and download skins you can use in Eaglercraft.</p>
                 <hr>
-                <p class="bolded settingstitle">UI</p>
-                <p class="settingsdetails">v1.5.00</p>
-                <p class="settingsdetails">Tuesday, February 24th, 2026</p>
-                <hr>
-                <p class="bolded settingstitle">LEGAL AND CREDITS</p>
-                <p class="settingsdetails">This website is not affiliated with Mojang.</p>
-                <p class="settingsdetails">Copyright © 1999-2026 <span style="color: red; text-shadow: 0 0 1vw;">Vulen Corporation</span>. All rights reserved.</p>
-            </div>
-        </div>
-        <div id="gameSelection">
-            <div id="assistedmodewrapper">
-                <label for="assistedmodeselect" class="bolded">Control Mode</label>
-                <select id="assistedmodeselect" onchange="setAssistedMode(this.value)">
-                    <option value="mobile">Mobile</option>
-                    <option value="controller">Controller</option>
-                </select>
-            </div>
-                <div class="dropdownSelector" onclick="dropdowntoggle()">
-                    <div style="display: flex; gap: 1vw;">
-                        <div class="centeredIcon">
-                            <img id="gameicon" src="https://irv77.github.io/AmplerLauncher/assets/images/mc-icons/grass.png" style="width: 2.5vw;" />
-                        </div>
-                        <div class="versionText">
-                            <p id="gametitle" class="bolded">Latest release</p>
-                            <p id="gameversion">1.12.2-u2</p>
-                        </div>
-                        <div id="dropdownuparrow" class="centeredIcon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
-                                 stroke-linecap="round" stroke-linejoin="round" class="dropdownIcon">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M6 9l6 6l6 -6" />
-                            </svg>
-                        </div>
+                <div id="skinsbox" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                    <div style="background: rgba(45, 80, 22, 0.3); padding: 1rem; border-radius: 0.5rem; text-align: center; border: 1px solid #2d5016;">
+                        <p style="color: #cccccc;">Skins</p>
+                        <p style="font-size: 0.8rem; color: #888;">Coming soon</p>
                     </div>
                 </div>
-            <div id="dropdn" class="dropdownMenu" style="visibility: hidden;"></div>
-            <a id="playbutton" href="Versions/Eaglercraft_1.12.2_WASM.html"><div id="mainbutton" class="playButton"></div></a>
-            <div class="username centeredIcon bolded"><p id="username">Generic User</p></div>
+            </div>
+
+            <!-- Patch Notes Section -->
+            <div id="patchNotes">
+                <h2 style="color: #4CAF50; margin-bottom: 1rem; font-size: 1.5rem;">Patch Notes</h2>
+                <p style="color: #cccccc; margin-bottom: 2rem;">Latest updates and patch notes.</p>
+                <hr>
+                <div id="patchnotesbox">
+                    <div style="background: rgba(45, 80, 22, 0.2); padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid #4CAF50;">
+                        <p class="bolded" style="color: #4CAF50; margin-bottom: 0.5rem;">Version 2.0.0 - Initial Release</p>
+                        <p style="color: #cccccc; font-size: 0.9rem;">Complete UI overhaul with improved responsive design and performance.</p>
+                        <p style="color: #888; font-size: 0.85rem; margin-top: 0.5rem;">May 22, 2026</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contributors Section -->
+            <div id="contributors" style="text-align: center;">
+                <h2 style="color: #4CAF50; margin-bottom: 0.5rem; font-size: 1.5rem;">Contributors</h2>
+                <p style="color: #cccccc; margin-bottom: 2rem;">People who have contributed to Eaglercraft</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="background: rgba(45, 80, 22, 0.3); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #2d5016;">
+                        <div style="width: 4rem; height: 4rem; background: #4CAF50; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">👨‍💻</div>
+                        <p class="bolded" style="color: #4CAF50; margin-bottom: 0.25rem;">Eaglercraft Team</p>
+                        <p style="color: #cccccc; font-size: 0.9rem;">Creator of Eaglercraft</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credits Section -->
+            <div id="credits" style="text-align: center;">
+                <h2 style="color: #4CAF50; margin-bottom: 0.5rem; font-size: 1.5rem;">Credits</h2>
+                <p style="color: #cccccc; margin-bottom: 2rem;">Resources and projects that made this possible</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="background: rgba(45, 80, 22, 0.3); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #2d5016;">
+                        <div style="width: 4rem; height: 4rem; background: #2196F3; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🎮</div>
+                        <p class="bolded" style="color: #2196F3; margin-bottom: 0.25rem;">Minecraft</p>
+                        <p style="color: #cccccc; font-size: 0.9rem;">Game engine and assets</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings">
+                <div style="max-width: 600px;">
+                    <h2 style="color: #4CAF50; margin-bottom: 2rem; font-size: 1.5rem;">Settings</h2>
+                    
+                    <div style="background: rgba(45, 80, 22, 0.2); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                        <p class="bolded" style="color: #4CAF50; margin-bottom: 1rem;">LAUNCHER SETTINGS</p>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="checkbox" id="presetlaunchers" onchange="presetlaunchers()">
+                                <span>Preset launchers</span>
+                            </label>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="checkbox" id="launchnewtab" onchange="launchnewtab()">
+                                <span>Launch game in new window</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(45, 80, 22, 0.2); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                        <p class="bolded" style="color: #4CAF50; margin-bottom: 1rem;">USERNAME</p>
+                        <input type="text" id="settingsusername" placeholder="Enter username" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem;" onkeyup="usernamechange()">
+                    </div>
+
+                    <div style="background: rgba(45, 80, 22, 0.2); padding: 1.5rem; border-radius: 0.5rem;">
+                        <p class="bolded" style="color: #d32f2f; margin-bottom: 1rem;">DANGER ZONE</p>
+                        <button class="redbutton" onclick="clearlocalstorage()" style="width: 100%; padding: 0.75rem; cursor: pointer;">
+                            Clear All Local Storage
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(45, 80, 22, 0.2); border-radius: 0.5rem; border-left: 4px solid #4CAF50;">
+                    <p class="bolded" style="color: #4CAF50; margin-bottom: 1rem;">ABOUT</p>
+                    <p style="color: #cccccc; margin-bottom: 0.5rem;"><strong>Eaglercraft Launcher</strong></p>
+                    <p style="color: #cccccc; font-size: 0.9rem; margin-bottom: 1rem;">A web-based launcher for Eaglercraft</p>
+                    <p style="color: #cccccc; font-size: 0.85rem;">Version 2.0.0</p>
+                    <p style="color: #cccccc; font-size: 0.85rem;">May 22, 2026</p>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="./js/index.js"></script>
-    <script src="./js/profileInjector.js"></script>
+
+    <script>
+        // Utility Functions
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('#mods, #faq, #installations, #skins, #patchNotes, #contributors, #credits, #settings, #game-bg');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function switchTab(sectionId, element) {
+            showSection(sectionId);
+            document.querySelectorAll('.headerButtons').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function usernamechange() {
+            const username = document.getElementById('usernameinput')?.value || 'Player';
+            localStorage.setItem('username', username);
+        }
+
+        function presetlaunchers() {
+            console.log('Preset launchers toggled');
+        }
+
+        function launchnewtab() {
+            console.log('Launch in new tab toggled');
+        }
+
+        function clearlocalstorage() {
+            if (confirm('Are you sure you want to clear all local storage?')) {
+                localStorage.clear();
+                alert('Local storage cleared!');
+                window.location.reload();
+            }
+        }
+
+        function launchGame() {
+            const username = document.getElementById('usernameinput').value || 'Player';
+            const version = document.getElementById('versionSelect').value;
+            
+            // Store username
+            localStorage.setItem('username', username);
+            
+            // Redirect to game
+            if (version === '1.12.2') {
+                window.location.href = './Versions/Eaglercraft_1.12.2_WASM.html';
+            } else {
+                window.location.href = './Versions/Eaglercraft_1.8.html';
+            }
+        }
+
+        // Load username on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUsername = localStorage.getItem('username') || 'Player';
+            const inputElements = document.querySelectorAll('#usernameinput, #settingsusername');
+            inputElements.forEach(el => el.value = savedUsername);
+        });
+
+        // Handle sidebar selection
+        document.querySelectorAll('.sidebarOptions').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.sidebarOptions').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
 </body>
+
 </html>
