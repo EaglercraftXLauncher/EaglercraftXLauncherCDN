@@ -142,7 +142,7 @@
                     <li id="header2" class="headerButtons" onclick="modsheader()">Mods</li>
                     <li id="header3" class="headerButtons" onclick="faqsheader()">FAQ</li>
                     <li id="header4" class="headerButtons" onclick="installationheader()">Installations</li>
-                    <li id="header5" class="headerButtons" onclick="errorNA('skins')">Skins</li>
+                    <li id="header5" class="headerButtons" onclick="skinsheader()">Skins</li>
                     <li id="header6" class="headerButtons" onclick="patchnotesheader()">Patch Notes</li>
                     <li id="header7" class="headerButtons" onclick="contributorsheader()">Contributors</li>
                     <li id="header8" class="headerButtons" onclick="creditsheader()">Credits</li>
@@ -171,6 +171,15 @@
         </div>
         <div id="game-bg" style="background-image: url(https://irv77.github.io/AmplerLauncher/assets/images/web-edition.jpg);">
             <img id="game-title" src="https://irv77.github.io/AmplerLauncher/assets/images/web-title.png" alt="eaglercraft">
+        </div>
+
+        <div id="skins">
+            <div style="padding: 2vh 3vw 7vh;">
+                <p class="bolded patchnotes-title">Skin Library</p>
+                <p>Preview and download skins you can use in compatible Eaglercraft clients.</p>
+                <hr style="margin-top: 2vh;">
+                <div id="skinsbox" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(12vw,1fr));gap:1vw;padding-top:1vw;"></div>
+            </div>
         </div>
         <div id="patchNotes">
             <div style="padding: 2vh 3vw 7vh;">
@@ -298,5 +307,6 @@
         </div>
     </div>
     <script src="./js/index.js"></script>
+    <script src="./js/profileInjector.js"></script>
 </body>
 </html>

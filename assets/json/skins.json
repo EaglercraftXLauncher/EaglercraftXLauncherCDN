@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Rainbow Cool Boy",
+    "author": "Community",
+    "image": "./Tools/Skins/rainbow-cool-boy.png"
+  },
+  {
+    "name": "Jack Hallow",
+    "author": "Community",
+    "image": "./Tools/Skins/JackHallow.png"
+  },
+  {
+    "name": "Windows XP",
+    "author": "Community",
+    "image": "./Tools/Skins/windowsxp.png"
+  },
+  {
+    "name": "Cultist",
+    "author": "Community",
+    "image": "./Tools/Skins/cultist.png"
+  },
+  {
+    "name": "Dream Mask",
+    "author": "Community",
+    "image": "./Tools/Skins/dreamMask.png"
+  },
+  {
+    "name": "Enderman",
+    "author": "Community",
+    "image": "./Tools/Skins/enderman.png"
+  },
+  {
+    "name": "Zombie",
+    "author": "Community",
+    "image": "./Tools/Skins/zombie.png"
+  },
+  {
+    "name": "BadBoyHalo",
+    "author": "Community",
+    "image": "./Tools/Skins/badboyhalo.png"
+  }
+]
