@@ -18,10 +18,9 @@ jobs:
       run: |
         Get-ChildItem -Recurse -File | Select-Object FullName > file_list.txt
 
-    - name: Commit and Push File List
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@://github.com"
-        git add file_list.txt
-        git commit -m "Update file_list.txt [skip ci]" || exit 0
-        git push
+    - name: Upload File List Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: repository-file-list
+        path: file_list.txt
+        retention-days: 5
