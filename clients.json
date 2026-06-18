@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "contentId": "5SxZMNQuBlmdOv",
+    "kind": "client",
+    "name": "Astra",
+    "author": "BarneyTheGod",
+    "description": "The Most Advanced and Popular Eaglercraft Client.",
+    "faviconUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5PjzeMa03MTNTfuWcglxXOaIvC4z9-ZSO5VcWll-_SzP5yrikOEMi_Hpl&s=10",
+    "posterUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM-8FCkEQVHHIG7XN3CTWXyXH_19DEN99Nhuqjj-O_TA&s=10",
+    "uploaderUid": "FvwQ91Kk3b2Lin5Jc41pC",
+    "createdAt": "2026-06-18T12:23:09.435Z",
+    "latestTag": "v1.1.8"
+  }
+]
